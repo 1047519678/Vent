@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.mvc.dao.DB2DaoRule">
+	<resultMap type="Empy" id="EmpyResultMap">
+		<id property="sendId" column="sendId"/>
+		<result property="emailName" column="emailName"/>
+		<result property="sendTo" column="sendTo"/>
+		<result property="userName" column="userName"/>
+	</resultMap>
+	
+	<!--    判断用户是否注册过-->
+	<select id="Empyidcheck" resultType="Empy">
+     SELECT a.EmpyName FROM Empy3 a WHERE RIGHT(EmpyID,6)=#{password} AND a.EmpyNo=#{username}
+    </select>
+	
+	<!--    判断工号是否在主数据库中存在-->
+	<select id="dbinnewuser" resultType="Empy">
+   SELECT a.EmpyName FROM Empy3 a WHERE  a.EmpyNo=#{username}
+    </select>
+	<!--  体温推送查询  -->
+	<select id="dao_tdpush" resultType="Map">
+   SELECT DISTINCT a.EmpyCard,a.EmpyNo,a.EmpyName,a.DeptName,a.DutyNoA,b.tdystate as kqstate,b.opid,a.EMail FROM Empy3 a, setTdwechat b   WHERE  a.EmpyNo=b.EmpyNo AND  a.WorkState='Y'  order by b.tdystate,a.EmpyNo
+ </select>
+	
+	<!--   单个体温推送查询 -->
+	
+	<select id="dao_atdpush" resultType="Map">
+   SELECT DISTINCT a.EmpyCard,a.EmpyNo,a.EmpyName,a.DeptName,a.DutyNoA,b.tdystate as kqstate,b.opid,a.EMail FROM Empy3 a, setTdwechat b   WHERE  a.EmpyNo=b.EmpyNo AND  a.WorkState='Y' AND a.EmpyNo like '%${EmpyNo}%'  order by b.tdystate,a.EmpyNo
+ </select>
+	<!--	修改推送状态-->
+	<select id="dao_update_pushstate" parameterType="Empy" statementType="CALLABLE" resultType="int">
+	{call update_pushstate(
+	#{tablecount,jdbcType=VARCHAR,mode=IN},
+	#{EmpyNo,jdbcType=VARCHAR,mode=IN},
+	#{state,jdbcType=VARCHAR,mode=IN}
+	)}
+</select>
+	
+	<!--	公告推送-->
+	<select id="dao_noticepush" resultType="Map">
+SELECT DISTINCT a.EmpyNo,a.EmpyName,b.Noticestate as kqstate,b.opid,a.EmpyCard,a.DeptName,a.DutyNoA,a.EMail FROM Empy3 a, setTdwechat b   WHERE  a.EmpyNo=b.EmpyNo AND  a.WorkState='Y' order by b.Noticestate,a.EmpyNo
+
+ </select>
+	
+	<!--	公告推送-->
+	<select id="dao_anoticepush" resultType="Map">
+SELECT DISTINCT a.EmpyNo,a.EmpyName,b.Noticestate as kqstate,b.opid,a.EmpyCard,a.DeptName,a.DutyNoA,a.EMail FROM Empy3 a, setTdwechat b   WHERE  a.EmpyNo=b.EmpyNo AND  a.WorkState='Y'  AND a.EmpyNo like '%${EmpyNo}%' order by b.Noticestate,a.EmpyNo
+
+ </select>
+	
+	<!--	未上传体温报表发-->
+	<select id="dao_tdemailstate" resultType="Map">
+SELECT DISTINCT a.EmpyNo,a.EmpyName,b.tdemailstate as kqstate,b.opid,a.EmpyCard,a.DeptName,a.DutyNoA,a.EMail FROM Empy3 a, setTdwechat b   WHERE  a.EmpyNo=b.EmpyNo AND  a.WorkState='Y'  order by b.tdemailstate,a.EmpyNo
+
+ </select>
+	
+	<!--	未上传体温报表发-->
+	<select id="dao_atdemailstate" resultType="Map">
+SELECT DISTINCT a.EmpyNo,a.EmpyName,b.tdemailstate as kqstate,b.opid,a.EmpyCard,a.DeptName,a.DutyNoA,a.EMail FROM Empy3 a, setTdwechat b   WHERE  a.EmpyNo=b.EmpyNo AND  a.WorkState='Y'  AND a.EmpyNo like '%${EmpyNo}%' order by b.tdemailstate,a.EmpyNo
+
+ </select>
+	
+	<!--	未刷卡报表-->
+	<select id="dao_kqemailstate" resultType="Map">
+	SELECT DISTINCT a.EmpyNo,a.EmpyName,b.kqemailstate as kqstate,b.opid,a.EmpyCard,a.DeptName,a.DutyNoA,a.EMail FROM Empy3 a, setTdwechat b   WHERE  a.EmpyNo=b.EmpyNo AND  a.WorkState='Y'  order by b.kqemailstate,a.EmpyNo
+
+ </select>
+	
+	<!--	未刷卡报表-->
+	<select id="dao_akqemailstate" resultType="Map">
+	SELECT DISTINCT a.EmpyNo,a.EmpyName,b.kqemailstate as kqstate,b.opid,a.EmpyCard,a.DeptName,a.DutyNoA,a.EMail FROM Empy3 a, setTdwechat b   WHERE  a.EmpyNo=b.EmpyNo AND  a.WorkState='Y'  AND a.EmpyNo like '%${EmpyNo}%' order by b.kqemailstate,a.EmpyNo
+
+ </select>
+	
+	
+	<!--	未绑定微信-->
+	<select id="dao_notwechatstate" resultType="Map">
+SELECT DISTINCT a.EmpyNo,a.EmpyName,b.notwechatstate as kqstate,b.opid,a.EmpyCard,a.DeptName,a.DutyNoA,a.EMail FROM Empy3 a, setTdwechat b   WHERE  a.EmpyNo=b.EmpyNo AND  a.WorkState='Y'  order by b.notwechatstate,a.EmpyNo
+ </select>
+	
+	<!--	未绑定微信-->
+	<select id="dao_anotwechatstate" resultType="Map">
+SELECT DISTINCT a.EmpyNo,a.EmpyName,b.notwechatstate as kqstate,b.opid,a.EmpyCard,a.DeptName,a.DutyNoA,a.EMail FROM Empy3 a, setTdwechat b   WHERE  a.EmpyNo=b.EmpyNo AND  a.WorkState='Y'  AND a.EmpyNo like '%${EmpyNo}%'  order by b.notwechatstate,a.EmpyNo
+ </select>
+	
+	<!--	考勤推送-->
+	<select id="dao_kqstate" resultType="Map">
+SELECT DISTINCT a.EmpyNo,a.EmpyName,b.kqstate,b.opid,a.EmpyCard,a.DeptName,a.DutyNoA,a.EMail FROM Empy3 a, setTdwechat b   WHERE  a.EmpyNo=b.EmpyNo AND  a.WorkState='Y'   order by b.kqstate,a.EmpyNo</select>
+	
+	<!--	考勤推送-->
+	<select id="dao_akqstate" resultType="Map">
+SELECT DISTINCT a.EmpyNo,a.EmpyName,b.kqstate,b.opid,a.EmpyCard,a.DeptName,a.DutyNoA,a.EMail FROM Empy3 a, setTdwechat b   WHERE  a.EmpyNo=b.EmpyNo AND  a.WorkState='Y'  AND a.EmpyNo like '%${EmpyNo}%'  order by b.kqstate,a.EmpyNo </select>
+	
+	<!--	行程异常推送报表-->
+	<select id="dao_tripstate" resultType="Map">
+SELECT DISTINCT a.EmpyNo,a.EmpyName,b.tripstate as kqstate,b.opid,a.EmpyCard,a.DeptName,a.DutyNoA,a.EMail FROM Empy3 a, setTdwechat b   WHERE  a.EmpyNo=b.EmpyNo AND  a.WorkState='Y'  order by b.tripstate,a.EmpyNo
+ </select>
+	
+	<!--	行程异常推送报表-->
+	<select id="dao_atripstate" resultType="Map">
+SELECT DISTINCT a.EmpyNo,a.EmpyName,b.tripstate as kqstate,b.opid,a.EmpyCard,a.DeptName,a.DutyNoA,a.EMail FROM Empy3 a, setTdwechat b   WHERE  a.EmpyNo=b.EmpyNo AND  a.WorkState='Y'  AND a.EmpyNo like '%${EmpyNo}%'  order by b.tripstate,a.EmpyNo
+ </select>
+
+
+</mapper>

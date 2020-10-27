@@ -1,0 +1,98 @@
+[
+  {
+    "ischeck": "false",
+    "children": [
+      {
+        "gspread": "false",
+        "gfontfamily": "ok-icon",
+        "gtitle": "组管理",
+        "icon": "ok-icon-shuju1",
+        "fontfamily": "ok-icon",
+        "href": "http://192.168.65.7/phi/html/fty.html",
+        "gicon": "&#xe654;",
+        "title": "组管理",
+        "ghref": "0",
+        "gischeck": "false",
+        "spread": "false"
+      },
+      {
+        "gspread": "false",
+        "gfontfamily": "ok-icon",
+        "gtitle": "组管理",
+        "icon": "ok-icon-shuju1",
+        "fontfamily": "ok-icon",
+        "href": "http://192.168.65.7/phi/html/fty.html",
+        "gicon": "&#xe654;",
+        "title": "用户管理",
+        "ghref": "0",
+        "gischeck": "false",
+        "spread": "false"
+      }
+    ],
+    "icon": "&#xe654;",
+    "href": "0",
+    "title": "组管理",
+    "spread": "false"
+  },
+  {
+    "ischeck": "false",
+    "children": [
+      {
+        "gspread": "false",
+        "gfontfamily": "ok-icon",
+        "gtitle": "看板系统",
+        "icon": "ok-icon-shuju1",
+        "fontfamily": "ok-icon",
+        "href": "http://192.168.65.7/phi/html/fty.html",
+        "gicon": "&#xe654;",
+        "title": "零缺陷三化一看板",
+        "ghref": "0",
+        "gischeck": "false",
+        "spread": "false"
+      },
+      {
+        "gspread": "false",
+        "gfontfamily": "ok-icon",
+        "gtitle": "看板系统",
+        "icon": "ok-icon-shuju1",
+        "fontfamily": "ok-icon",
+        "href": "http://192.168.65.7/phi/html/fty.html",
+        "gicon": "&#xe654;",
+        "title": "不良率",
+        "ghref": "0",
+        "gischeck": "false",
+        "spread": "false"
+      },
+      {
+        "gspread": "false",
+        "gfontfamily": "ok-icon",
+        "gtitle": "看板系统",
+        "icon": "ok-icon-shuju1",
+        "fontfamily": "ok-icon",
+        "href": "http://192.168.65.7/phi/html/fty.html",
+        "gicon": "&#xe654;",
+        "title": "直通率",
+        "ghref": "0",
+        "gischeck": "false",
+        "spread": "false"
+      },
+      {
+        "gspread": "false",
+        "gfontfamily": "ok-icon",
+        "gtitle": "看板系统",
+        "icon": "ok-icon-shuju1",
+        "fontfamily": "ok-icon",
+        "href": "http://192.168.65.7/phi/html/faildt.html",
+        "gicon": "&#xe654;",
+        "title": "损失率",
+        "ghref": "0",
+        "gischeck": "false",
+        "spread": "false"
+      }
+    ],
+    "icon": "&#xe654;",
+    "href": "0",
+    "title": "看板系统",
+    "spread": "false"
+  }
+]

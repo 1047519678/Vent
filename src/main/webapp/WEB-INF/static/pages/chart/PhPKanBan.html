@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>三化一看板</title>
+    <link rel="stylesheet" href="../../css/oksub.css?version001">
+    <script src="../../lib/echarts/echarts.min.js?version000"></script>
+    <style>
+        .left {
+            text-align: center;
+            display: inline-block;
+            width: 50%;
+            height: auto;
+        }
+
+        .right {
+            text-align: center;
+            display: inline-block;
+            margin-left: -5px;
+            width: 50%;
+        }
+
+        .container {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+<!--模糊搜索区域-->
+<div class="layui-row">
+    <FORM class="layui-form layui-col-md12 ok-search">
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+            <legend id="legendid">零缺陷三化一看板,前班别实际生产状况,每2分钟刷新一次</legend>
+        </fieldset>
+        <div id="divmodel" style="margin:0 300px 0 0;">
+            <div class="layui-form-item">
+                <label class="layui-form-label">选择机种</label>
+                <div class="layui-input-inline">
+                    <select name="ProductModel" id="ProductModel">
+                    </select>
+                </div>
+                <div class="layui-input-inline">
+                    <button id="btn1" type="button" class="layui-btn layui-btn-normal" lay-submit=""
+                            lay-filter="search" style="width: 86%;">提 交
+                    </button>
+                </div>
+                <span class="layui-btn">班别:<span class="layui-badge layui-bg-blue" id="Classinfo">白班</span></span>
+                <span class="layui-btn">班别节拍数量:<span class="layui-badge layui-bg-blue" id="BeatCount">0</span></span>
+                <span class="layui-btn">10分钟UPM:<span class="layui-badge layui-bg-blue" id="Upm">0</span></span>
+                <span class="layui-btn">理论产能:<span class="layui-badge layui-bg-blue" id="theoryqty">0</span></span>
+                <span class="layui-btn">实际产能:<span class="layui-badge layui-bg-red" id="qty">0</span></span>
+
+            </div>
+
+        </div>
+        <div id="divreprot" style="display: block">
+            <div style="padding: 20px; background-color: #F2F2F2;">
+                <div id="div1" style="display: block">
+                    <div class="layui-row layui-col-space15">
+                        <div class="layui-col-md6">
+                            <div class="layui-card">
+                                <div class="layui-card-header"><span class="layui-badge layui-bg-blue">当天达成状况</span>
+                                </div>
+                                <div class="layui-card-body">
+                                    <div id="oil" style="height:260px"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-col-md6">
+                            <div class="layui-card">
+                                <div class="layui-card-header"><span
+                                        class="layui-badge layui-bg-blue">前三月,前三周,当周 达成状况</span></div>
+                                <div class="layui-card-body">
+                                    <div id="qxtu" style="height:260px"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-row layui-col-space15">
+                        <div class="layui-col-md6">
+                            <div class="layui-card">
+                                <div class="layui-card-header"><span class="layui-badge layui-bg-blue">DT 损失状况</span>
+                                </div>
+                                <div class="layui-card-body">
+                                    <div id="ntf" style="height:260px"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-col-md6">
+                            <div class="layui-card">
+                                <div class="layui-card-header"><span class="layui-badge layui-bg-blue">FTY 达成状况</span>
+                                </div>
+                                <div class="layui-card-body">
+                                    <div id="fty" style="height:260px"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="div2" style="display: none">
+                    <div class="layui-row layui-col-space15">
+                        <div class="layui-col-md12">
+                            <div class="layui-card">
+                                <div class="layui-card-header"><span class="layui-badge layui-bg-blue">实时生产状况</span>
+                                </div>
+                                <div class="layui-card-body">
+                                    <div class="container">
+                                        <!--数据表格-Left-->
+                                        <div class="left">
+                                            <table class="layui-hide" id="tableft" lay-filter="tableFilter"></table>
+                                        </div>
+                                        <!--数据表格 right-->
+                                        <div class="right" id="DivData">
+                                            <table class="layui-hide" id="tabright" lay-filter="tableFilter"></table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!--js逻辑-->
+<script src="../../lib/layui/layui.js?ver002"></script>
+<script src="../../js/KanBan.js?ver001"></script>
+<script type="text/html" id="statusvoer">
+    <div style="background:#1effff;width: 100%;height: 100%;text-align: center">
+        <div style="background:#1eff34;text-align:center;width:{{d.達成率}}"> {{d.達成率}}</div>
+    </div>
+</script>
+
+<script>
+    layui.use(["element", "table", "form", "laydate", "okLayer", "okUtils", "okMock"], function () {
+        let form = layui.form;
+        let $ = layui.jquery;
+        let okLayer = layui.okLayer;
+        let okUtils = layui.okUtils;
+        let okMock = layui.okMock;
+
+        form.on("submit(search)", function (data) {
+            okUtils.getcode("/ApiKanBantable", "post", data.field, false);
+            return false;
+        });
+
+        $(document).ready(function () {
+            okUtils.getcode("/ApiKanBanModel", "post", "", false);
+            return false;
+
+        });
+
+        //十五秒刷新一次
+        window.reloadView = function () {
+            //获取当前时间
+            var date = new Date();
+            var seperator1 = "-";
+            var seperator2 = ":";
+            var month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+            var strDate = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+            var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate +
+                " " + date.getHours() + seperator2 + date.getMinutes() +
+                seperator2 + date.getSeconds();
+            $("#legendid").html("零缺陷三化一看板,前班别实际生产状况,每2分钟刷新一次,上次刷新时间:" + currentdate);
+            document.getElementById("btn1").click();
+            form.on("submit(search)", function (data) {
+                okUtils.getcode("/ApiKanBantable", "post", data.field, false);
+                return false;
+            });
+            return false
+        };
+        setInterval('reloadView()', 120000);
+        let runflg = false;
+        setInterval('onloadrun()', 20000);
+        window.onloadrun = function () {
+            if (!(runflg)) {
+                document.getElementById("div1").style.display = "none";//隐藏
+                document.getElementById("div2").style.display = "block";//隐藏
+                runflg = true;
+                //滚动条滚动到当前时间位置
+                var date = new Date();
+                var seperator1 = "-";
+                var seperator2 = ":";
+                var month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+                var strDate = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+                var currentdate = date.getHours();
+                let obj = $(".layui-table-main");
+                // 滚动条长度
+                let divwidth = obj[1].scrollWidth;
+                let Timemean = divwidth / 24;
+                let newwidth = Timemean * currentdate;
+                obj[1].scrollTo(newwidth, obj[1].scrollTop)
+            } else {
+                document.getElementById("div1").style.display = "block";//隐藏
+                document.getElementById("div2").style.display = "none";//隐藏
+                runflg = false;
+            }
+        }
+    });
+</script>
+</body>
+</html>

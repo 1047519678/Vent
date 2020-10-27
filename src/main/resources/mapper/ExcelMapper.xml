@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.mvc.dao.DB1DaoRule">
+
+    <select id="selDataInfo" parameterType="map" statementType="CALLABLE" resultType="java.util.LinkedHashMap">
+	{call mes.dbo.ExcelDataByDay(
+	#{line,jdbcType=VARCHAR,mode=IN},
+	#{startDateTime,jdbcType=VARCHAR,mode=IN},
+	#{endDateTime,jdbcType=VARCHAR,mode=IN}
+	)}
+    </select>
+</mapper>

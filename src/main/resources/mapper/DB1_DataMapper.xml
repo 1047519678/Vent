@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.mvc.dao.DB1DaoRule">
+	
+	<!--异常分析表-->
+	<select id="dao_exception" parameterType="List" statementType="CALLABLE" resultType="Map">
+	{call [MES].[dbo].[Report_ling](
+		#{starttime,jdbcType=VARCHAR,mode=IN},
+		#{endtime,jdbcType=VARCHAR,mode=IN},
+		#{ProductModel,jdbcType=VARCHAR,mode=IN}
+	)}
+</select>
+	
+	
+	<!--     左侧菜单组管理-->
+	<select id="dao_urlgroup" parameterType="List" resultType="Map">
+
+SELECT a.gparentid,a.gtitle,a.ghref,a.gfontfamily,a.gicon,a.gspread,a.gischeck FROM urlgroup a order by a.grank
+
+</select>
+	
+	<select id="dao_urlmanage" parameterType="List" resultType="Map">
+
+--菜单列表管理
+SELECT a.urlid,b.gtitle,a.title,a.href,a.icon,a.spread,a.fontFamily FROM urllist a,urlgroup b WHERE a.parentid=b.gparentid ORDER BY b.grank,a.rank
+
+</select>
+	
+	<!--	修改用户密码-->
+	<select id="dao_changepwd" parameterType="Empy" statementType="CALLABLE" resultType="int">
+	{call updatepwd(
+		#{EmpyNo,jdbcType=VARCHAR,mode=IN},
+		#{pwd,jdbcType=VARCHAR,mode=IN}
+	)}
+</select>
+	
+	<!--24小时维修报表-->
+	<select id="dao_repair" statementType="CALLABLE" parameterType="List" resultType="Map">
+{call mes.dbo.servicereportd (
+#{starttime,jdbcType=VARCHAR,mode=IN},
+#{endtime,jdbcType=VARCHAR,mode=IN},
+#{line,jdbcType=VARCHAR,mode=IN}
+)}
+</select>
+	
+	<!--	上班时间//-->
+	<!--	SELECT  TOP 10 ProductModel,DATE,Work_time,DT_worktime,UPM,Attendance_manpower,Theoretical_Rate,Insert_time  FROM [MES].[dbo].[Production_report]  ORDER BY insert_time  DESC-->
+	<select id="dao_queryworktime" statementType="CALLABLE" parameterType="List" resultType="Map">
+{call query_worktime}
+</select>
+	
+	<!--    判断否上传过工作时间-->
+	<select id="dao_checkworktime" parameterType="Empy" resultType="int">
+  SELECT  count(*) AS count  FROM [MES].[dbo].[Production_report]
+WHERE ProductModel=#{model} and date>#{date}
+    </select>
+	
+	<!--&lt;!&ndash;	插入上班时间-->
+	<select id="dao_addworktime" parameterType="Empy" statementType="CALLABLE" resultType="int">
+	{call create_worktime(
+	#{productmodel,jdbcType=VARCHAR,mode=IN},
+	#{date,jdbcType=VARCHAR,mode=IN},
+	#{work_time,jdbcType=VARCHAR,mode=IN},
+	#{dt_worktime,jdbcType=VARCHAR,mode=IN},
+	#{upm,jdbcType=VARCHAR,mode=IN},
+	#{attendance_manpower,jdbcType=VARCHAR,mode=IN},
+	#{theoretical_rate,jdbcType=VARCHAR,mode=IN}
+	)}
+</select>
+	
+	<!--	查询机种的上限下限-->
+	<select id="dao_querymodelsx" parameterType="List" resultType="Map">
+Select ProductModel,WorkStation,OutputTarget_ll,OutputTarget_UL From MES.dbo.LineBaseData  where  ProductModel=#{ProductModel}
+</select>
+	
+	<!--	检查今天是否有维护UPM-->
+	<select id="dao_checkupm" resultType="Map">
+	SELECT TOP 1 UPM FROM MES.DBO.Production_report WHERE ProductModel = #{ProductModel} AND  CONVERT(DATE,[Date])=#{date}
+	
+	</select>
+	
+	
+	<!--&lt;!&ndash;	插入非DT异常项目-->
+	<select id="dao_insertnotdtexception" parameterType="Empy" statementType="CALLABLE" resultType="int">
+	{call insert_notdtexception(
+	#{project,jdbcType=VARCHAR,mode=IN},
+	#{Flg,jdbcType=VARCHAR,mode=IN},
+	#{ProductModel,jdbcType=VARCHAR,mode=IN},
+	#{dtqty,jdbcType=VARCHAR,mode=IN},
+	#{date,jdbcType=VARCHAR,mode=IN}
+	)}
+</select>
+	
+	<!--     用户列表管理-->
+	<select id="dao_usermanage" parameterType="List" resultType="Map">
+
+	SELECT a.EmpyNo,a.EmpyName,a.Pwd, a.Workstate,b.groupid,b.groupname FROM userlist a, usergroup b WHERE a.userGroupid=b.groupid
+
+</select>
+	
+	
+	<!--     用户组管理-->
+	<select id="dao_usergroupmanage" parameterType="List" resultType="Map">
+
+	SELECT b.groupid,b.groupname FROM usergroup b
+
+</select>
+	<!--	获取机种-->
+	<select id="dao_getmodel" parameterType="List" resultType="Map">
+	SELECT DISTINCT a.ProductModel FROM MES.DBO.ActualOutput2 a WHERE a.ProductModel!='L116-AN10A-050B-HW' AND a.ProductModel!='L116-AN10C-050B-HW'
+</select>
+	
+	
+	<!--	获取机种-->
+	<select id="dao_getreparimodel" parameterType="List" resultType="Map">
+	SELECT DISTINCT part_no as ProductModel  FROM MES.DBO.Maintenance_report
+</select>
+	
+	<!--	修改机种上下限-->
+	<select id="dao_update_ul_ll" parameterType="Empy" statementType="CALLABLE" resultType="int">
+	{call update_ul_ll(
+	#{frm2productmodel,jdbcType=VARCHAR,mode=IN},
+	#{frm2workstation,jdbcType=VARCHAR,mode=IN},
+	#{ul_sx,jdbcType=VARCHAR,mode=IN},
+	#{ll_sx,jdbcType=VARCHAR,mode=IN}
+	)}
+</select>
+	
+	<!--	获取机种生产记录表-->
+	<select id="dao_modelrate" parameterType="Empy" statementType="CALLABLE" resultType="Map">
+	{call mes.dbo.proc_KanBan(
+	#{productmodel,jdbcType=VARCHAR,mode=IN},
+	#{today,jdbcType=VARCHAR,mode=IN}
+	)}
+</select>
+	
+	<!-- 获取所有权限列表-->
+	<select id="getAllAuth" parameterType="List" resultType="Map">
+	SELECT distinct urlid,title FROM urllist
+	</select>
+	<!-- 获取用户权限列表-->
+	<select id="getUserAuth" parameterType="List" resultType="String">
+	select distinct urlid from usersrclist where userId=#{userId}
+	</select>
+	
+	<insert id="addUserAuth">
+		insert into usersrclist(Userid, urlid) values(#{userId},#{urlid})
+	</insert>
+	
+	<delete id="delUserAuth">
+		delete from usersrclist where Userid = #{userId} and urlid = #{urlid}
+	</delete>
+	
+	<!--	获取线别 		SELECT DISTINCT line_name  FROM Maintenance_report WHERE Line_name IS NOT NULL AND Line_Name <> 'ASY' AND Line_Name <> 'DIP'-->
+	<select id="DaoGetLineName" parameterType="List" resultType="Map">
+		SELECT DISTINCT Line_Name  FROM MES.DBO.Maintenance_report WHERE Line_name IS NOT NULL AND Line_Name &lt;&gt; 'ASY' AND Line_Name &lt;&gt; 'DIP'
+	</select>
+
+</mapper>

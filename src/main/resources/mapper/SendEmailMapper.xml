@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.mvc.dao.SendEmailDao">
+    <resultMap type="SendEmail" id="SendEmailResultMap" >
+        <id property="sendId" column="sendId"/>
+        <result property="emailName" column="emailName"/>
+        <result property="sendTo" column="sendTo"/>
+        <result property="userName" column="userName"/>
+    </resultMap>
+    <select id="queryDataByName" resultType="SendEmail">
+        SELECT sendId, emailName, sendTo, userName
+        FROM SendEmail
+        WHERE emailName=#{emailName}
+    </select>
+
+    <select id="getFormList" resultType="SendEmail">
+        SELECT distinct emailName
+        FROM SendEmail
+    </select>
+</mapper>

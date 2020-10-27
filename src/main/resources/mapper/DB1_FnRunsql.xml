@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.mvc.dao.DB1DaoRule">
+	
+	
+	<!--	万能的 MAP类型 dao -->
+	<!--个人想法 就同类型传sql 过来就好了 减少代码量	-->
+	<select id="DaoFnRunSql" parameterType="Empy" statementType="CALLABLE" resultType="Map">
+	{call FnRunsql(
+	#{sql,jdbcType=VARCHAR,mode=IN}
+	)}
+</select>
+
+
+</mapper>

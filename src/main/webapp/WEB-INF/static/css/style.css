@@ -1,0 +1,7 @@
+*{margin: 0;padding: 0;}
+html, body{width: 100vw;height: 100vh;overflow: hidden;font-family: "微软雅黑";}
+#scene{position: relative;width: 100%;height: 500px;background-color: #0064AF;background-image: linear-gradient(0deg, #021126 1%, #2CA8F0 100%);z-index: 1;}
+.jsdaima{width: 500px;height: 300px;position: absolute;z-index: 9999;border: solid 1px #CDCDCD;margin-left: 35%;margin-top: 10%;}
+.jsdaima h1{line-height: 80px;color: #fff;text-align: center;}
+.jsdaima p{text-align: center;color: #fff;line-height: 30px;}
+.jsdaima a {color: #fff; text-decoration: none;}

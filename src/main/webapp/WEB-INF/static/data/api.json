@@ -1,0 +1,50 @@
+[
+
+  {
+    "title": "看板系统",
+    "href": "",
+    "icon": "&#xe62c;",
+    "spread": false,
+    "children": [
+
+          {
+            "title": "零缺陷三化一看板",
+            "href": "http://192.168.65.7/phi/html/",
+            "fontFamily": "ok-icon",
+            "icon": "ok-icon-shuju1",
+            "spread": false
+          },
+          {
+            "title": "24H维修报表",
+            "fontFamily": "ok-icon",
+            "href": "http://192.168.65.7/phi/date/repair.html",
+            "icon": "ok-icon-shuju1",
+            "spread": false
+          }
+		  ,
+          {
+            "title": "损失率",
+            "href": "http://192.168.65.7/phi/html/faildt.html",
+            "fontFamily": "ok-icon",
+            "icon": "ok-icon-shuju1",
+            "spread": false
+          }
+		  ,
+          {
+            "title": "直通率",
+            "href": "http://192.168.65.7/phi/html/fty.html",
+            "fontFamily": "ok-icon",
+            "icon": "ok-icon-shuju1",
+            "spread": false
+          }
+		  ,
+          {
+            "title": "零缺陷节拍看板",
+            "fontFamily": "ok-icon",
+            "href": "http://192.168.65.7/phi/html/KanBan.html",
+            "icon": "ok-icon-shuju1",
+            "spread": false
+          }
+    ]
+  }
+]
